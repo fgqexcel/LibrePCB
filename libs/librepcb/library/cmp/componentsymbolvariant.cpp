@@ -63,8 +63,8 @@ ComponentSymbolVariant::ComponentSymbolVariant(
 
 ComponentSymbolVariant::ComponentSymbolVariant(const SExpression& node)
   : onEdited(*this),
-    mUuid(node.getChildByIndex(0).getValue<Uuid>()),
-    mNorm(node.getValueByPath<QString>("norm")),
+    mUuid(deserialize<Uuid>(node.getChild("@0"))),
+    mNorm(deserialize<QString>(node.getChild("norm/@0"))),
     mNames(node),
     mDescriptions(node),
     mSymbolItems(node),

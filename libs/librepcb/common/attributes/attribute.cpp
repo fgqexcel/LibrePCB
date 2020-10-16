@@ -46,10 +46,11 @@ Attribute::Attribute(const Attribute& other) noexcept
 
 Attribute::Attribute(const SExpression& node)
   : onEdited(*this),
-    mKey(node.getChildByIndex(0).getValue<QString>()),
-    mType(&AttributeType::fromString(node.getValueByPath<QString>("type"))),
-    mValue(node.getValueByPath<QString>("value")),
-    mUnit(mType->getUnitFromString(node.getValueByPath<QString>("unit"))) {
+    mKey(deserialize<AttributeKey>(node.getChild("@0"))),
+    mType(&AttributeType::fromString(node.getChild("type/@0").getValue())),
+    mValue(deserialize<QString>(node.getChild("value/@0"))),
+    mUnit(mType->getUnitFromString(
+        deserialize<QString>(node.getChild("unit/@0")))) {
   if (!checkAttributesValidity()) throw LogicError(__FILE__, __LINE__);
 }
 

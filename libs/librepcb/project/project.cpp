@@ -164,7 +164,7 @@ Project::Project(std::unique_ptr<TransactionalDirectory> directory,
           SExpression::parse(mDirectory->read(fp), mDirectory->getAbsPath(fp));
       foreach (const SExpression& node, schRoot.getChildren("schematic")) {
         FilePath fp = FilePath::fromRelative(
-            getPath(), node.getValueOfFirstChild<QString>());
+            getPath(), deserialize<QString>(node.getChild("@0")));
         std::unique_ptr<TransactionalDirectory> dir(new TransactionalDirectory(
             *mDirectory, fp.getParentDir().toRelative(getPath())));
         Schematic* schematic = new Schematic(*this, std::move(dir));
@@ -180,7 +180,7 @@ Project::Project(std::unique_ptr<TransactionalDirectory> directory,
           SExpression::parse(mDirectory->read(fp), mDirectory->getAbsPath(fp));
       foreach (const SExpression& node, brdRoot.getChildren("board")) {
         FilePath fp = FilePath::fromRelative(
-            getPath(), node.getValueOfFirstChild<QString>());
+            getPath(), deserialize<QString>(node.getChild("@0")));
         std::unique_ptr<TransactionalDirectory> dir(new TransactionalDirectory(
             *mDirectory, fp.getParentDir().toRelative(getPath())));
         Board* board = new Board(*this, std::move(dir));
